@@ -12,6 +12,13 @@ This project is a smart conversational calling platform built using the Node.js 
 - 🌐 Easy-to-use React frontend for entering phone numbers and prompts
 - 🔐 Full compliance with Indian telecom regulations (TRAI & DND)
 
+## 🧱 Tech Stack
+
+- **Backend**: Node.js + Express
+- **Database**: MongoDB
+- **Voice**: Twilio
+- **AI**: Third-Party_APIs
+
 ## Backend Setup
 
 Create a `.env` file in `/backend`
