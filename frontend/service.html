@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+</head>
+
+<body>
+  <img class="image-gradient" src="gradient.png" alt="gradient">
+  <div class="layer-blur"></div>
+
+  <div class="container">
+    <header>
+      <h1 data-aos="fade-down" data-aos-duration="1000" class="logo">CallMate.ai</h1>
+
+      <nav>
+        <a data-aos="fade-down" data-aos-duration="1500" href="home1.html">HOME</a>
+        <a data-aos="fade-down" data-aos-duration="2000" href="service.html">SERVICE</a>
+        <a data-aos="fade-down" data-aos-duration="2500" href="#">CONTACT</a>
+      </nav>
+
+
+    </header>
+    <main>
+      <div class="content">
+        <div data-aos="fade-zoom-in" data-aos-easing="ease-in-back" data-aos-delay="300" data-aos-offset="0"
+          data-aos-duration="1500" class="tag-box">
+          <div class="tag">Voice Feedback System</div>
+        </div>
+        <h1 data-aos="fade-zoom-in" data-aos-easing="ease-in-back" data-aos-delay="300" data-aos-offset="0"
+          data-aos-duration="2000">AICallMate</h1>
+
+        <p data-aos="fade-zoom-in" data-aos-easing="ease-in-back" data-aos-delay="300" data-aos-offset="0"
+          data-aos-duration="2500" class="description">
+          Collect real-time voice feedback through automated calls.
+        </p><br>
+
+        <div data-aos="fade-zoom-in" data-aos-easing="ease-in-back" data-aos-delay="300" data-aos-offset="0"
+          data-aos-duration="3000" class="input-group">
+
+          <!-- <input type="text" id="phoneInput" placeholder="Enter phone number 📞" /> -->
+          <textarea type="text" id="phoneInput" class="question-boxs" placeholder="Enter phone number 📞"></textarea>
+
+          <div data-aos="fade-zoom-in" data-aos-easing="ease-in-back" data-aos-delay="300" data-aos-offset="0"
+            data-aos-duration="3000" class="feedback-gen">
+            <!-- <input type="text" id="questionInput" placeholder="Generate feedback questions 📝" /> -->
+            <textarea type="text" id="questionInput" class="question-box"
+              placeholder="Generate feedback questions 📝"></textarea>
+          </div>
+          <div class="select-row">
+            <!-- <select id="category">
+              <option value="">Select Language</option>
+              <option value="hindi">Hindi</option>
+              <option value="english">English</option>
+            </select> -->
+
+            <select id="priority">
+              <option value="">Select Gender</option>
+              <option value="male">male</option>
+              <option value="female">female</option>
+            </select>
+          </div>
+
+          <div data-aos="fade-zoom-in" data-aos-easing="ease-in-back" data-aos-delay="300" data-aos-offset="0"
+            data-aos-duration="3000" class="button-container">
+            <button class="generate-btn" onclick="generateQuestions()">Generate</button>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+    <spline-viewer data-aos="fade-zoom-in" data-aos-easing="ease-in-back" data-aos-delay="300" data-aos-offset="0"
+      data-aos-duration="3000" class="robot-3d"
+      url="https://prod.spline.design/NaHTRUtqcAEzM07w/scene.splinecode"></spline-viewer>
+  </div>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.89/build/spline-viewer.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+
+
+
+
+
+  <footer data-aos="fade-up" data-aos-duration="1000" class="site-footer">
+    <div class="footer-content">
+      <h3>CallMate.ai</h3>
+      <p>AI CallMate:Voice Feedback System — enhancing customer insights through AI-driven feedback calls.</p>
+      <ul class="footer-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#service">Service</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#signin">Singin</a></li>
+      </ul>
+      <div class="social-icons">
+        <i class="fab fa-github"></i>
+        <i class="fab fa-linkedin"></i>
+        <i class="fab fa-instagram"></i>
+      </div><br>
+      <p class="footer-bottom-text">&copy; 2025 CallMate.ai. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div id="popup" class="popup">
+    <span class="call-icon">📞</span>
+    Call Started
+  </div>
+
+
+  <!-- <script>
+    function generateQuestions() {
+      const popup = document.getElementById("popup");
+      popup.classList.add("show");
+
+      // Hide after 2 seconds with fade-out
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 2000);
+    }
+
+  </script> -->
+  
+  <script>
+    async function generateQuestions() {
+      const popup = document.getElementById("popup");
+      const phoneNumbers = document.getElementById("phoneInput").value.trim();
+      const prompt = document.getElementById("questionInput").value.trim();
+      // const language = document.getElementById("category").value;
+      const gender = document.getElementById("priority").value;
+  
+      if (!phoneNumbers || !prompt || !gender) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Missing Info',
+          text: 'Please fill in phone number, question, language, and voice gender.',
+        });
+        return;
+      }
+  
+      popup.classList.add("show");
+      console.log(phoneNumbers);
+      try {
+        const response = await fetch("http://localhost:5000/start-call", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phoneNumbers,
+            prompt,
+            // language,
+            gender,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Server responded with status ${response.status}`);
+        }
+  
+        const data = await response.json();
+  
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: data.message || "Call started successfully!",
+        });
+  
+      } catch (error) {
+        console.error("Error starting call:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: "Failed to start call: " + error.message,
+        });
+      } finally {
+        setTimeout(() => {
+          popup.classList.remove("show");
+        }, 2000);
+      }
+    }
+  </script>
+  
+</body>
+
+</html>
